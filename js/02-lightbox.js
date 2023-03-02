@@ -20,6 +20,8 @@ function createGalleryMarkup(items) {
         `; 
     }).join('');
 };
+//   console.log(markup);
+
 
 function onGalleryContainerClick(e) {
     e.preventDefault();
@@ -29,7 +31,7 @@ function onGalleryContainerClick(e) {
         return;
     }
     
-    console.log(e.target.title);
+    console.log(e.target);
 }
 
 const lightbox = new SimpleLightbox('.gallery a', {
