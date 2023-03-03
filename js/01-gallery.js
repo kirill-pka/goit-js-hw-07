@@ -1,7 +1,4 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
-
-console.log(galleryItems);
 
 
 const galleryRef = document.querySelector('.gallery');
@@ -10,7 +7,7 @@ const markup = createGalleryMarkup(galleryItems);
 galleryRef.insertAdjacentHTML('beforeend', markup);
 
 galleryRef.addEventListener('click', onGalleryContainerClick)
-galleryRef.addEventListener('click', onOpenModal)
+galleryRef.addEventListener('click', onModal)
 
 function createGalleryMarkup(items) {
     return items.map(({preview, original, description}) => {
@@ -28,7 +25,6 @@ function createGalleryMarkup(items) {
         `; 
     }).join('');
 };
-  // console.log(markup);
 
 
 function onGalleryContainerClick(e) {
@@ -43,13 +39,27 @@ function onGalleryContainerClick(e) {
   console.log(e.target);
 }
 
-  function onOpenModal(e) {
-    const datasetSource = e.target.dataset.source;
-    const instance = basicLightbox.create(`<img src="${datasetSource}">`);
-    instance.show();
+function onModal(e) {
+  const datasetSource = e.target.dataset.source;
+  const instance = basicLightbox.create(`<img src="${datasetSource}">`);
+  instance.show();
+  console.log(datasetSource);
 
-      window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape")
-      instance.close();
-    });
-  }
+  const closeModal = () => {
+    instance.close();
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      closeModal();
+    }
+  };
+
+  const handleImageClick = (e) => {
+    e.stopPropagation();
+  };
+  
+  window.addEventListener("keydown", handleKeyDown);
+  instance.element().querySelector("img").addEventListener("click", handleImageClick);
+}
